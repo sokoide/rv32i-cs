@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rv32i-lib", "rv32i-lib\rv32
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo-exe", "demo-exe\demo-exe.csproj", "{32E3BE94-DEC5-4566-9F16-C1E47618690E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rv32i-xunit", "rv32i-xunit\rv32i-xunit.csproj", "{FD49634A-06B0-4496-A031-16880264A819}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{32E3BE94-DEC5-4566-9F16-C1E47618690E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32E3BE94-DEC5-4566-9F16-C1E47618690E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32E3BE94-DEC5-4566-9F16-C1E47618690E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD49634A-06B0-4496-A031-16880264A819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD49634A-06B0-4496-A031-16880264A819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD49634A-06B0-4496-A031-16880264A819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD49634A-06B0-4496-A031-16880264A819}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

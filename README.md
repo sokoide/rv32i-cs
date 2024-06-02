@@ -18,6 +18,12 @@ make demo8
 make demo6
 ```
 
+## How to test
+
+```bash
+make test
+```
+
 ## Quick Benchmark on M1 Mac mini
 
 * rv32i-go built by go1.22.3: 1.7s
