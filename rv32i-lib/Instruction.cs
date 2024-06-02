@@ -585,7 +585,7 @@ namespace RV32I
         }
 
 
-        private uint SignExtension(uint imm, int digit)
+        public static uint SignExtension(uint imm, int digit)
         {
             uint sign = (imm >> digit) & 0b1;
             if (sign == 1)
