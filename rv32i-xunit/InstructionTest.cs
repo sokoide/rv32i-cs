@@ -81,6 +81,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.U, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_J_When_Opcode_Is_0b1101111()
         {
@@ -91,6 +92,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.J, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_B_When_Opcode_Is_0b1100011()
         {
@@ -101,6 +103,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.B, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_I_When_Opcode_Is_0b0000011()
         {
@@ -111,6 +114,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.I, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_R_When_Opcode_Is_0b0110011()
         {
@@ -121,6 +125,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.R, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_S_When_Opcode_Is_0b0100011()
         {
@@ -131,6 +136,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.S, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_F_When_Opcode_Is_0b0001111()
         {
@@ -141,6 +147,7 @@ namespace RV32I.Tests
             // Assert
             Assert.Equal(InstructionType.F, result);
         }
+
         [Fact]
         public void GetInstructionType_Returns_C_When_Opcode_Is_0b1110011()
         {
