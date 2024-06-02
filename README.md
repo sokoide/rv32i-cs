@@ -1,4 +1,4 @@
-# RV32I emulator in C #
+# RV32I emulator in CSharp
 
 ## About
 
