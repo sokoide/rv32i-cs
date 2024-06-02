@@ -6,16 +6,16 @@
 
 ## How to run
 
-```
-dotnet run --project rv32i-cs.csproj -- --demo
-dotnet run --project rv32i-cs.csproj -- -s ./data/sample-binary-001.txt -e 0x0c -l trace
-dotnet run --project rv32i-cs.csproj -- -s ./data/sample-binary-001.txt -e 0x0c -l trace
-# .net 8 test
-dotnet run --framework net8.0 --configuration Release --project rv32i-cs.csproj --  -s ./data/sample-binary-fib.txt -e 0x130
-# .net 6 test
-dotnet run --framework net6.0 --configuration Release --project rv32i-cs-net6.csproj -- -s ./data/sample-binary-fib.txt -e 0x130
+```bash
+dotnet run --project demo-exe -- --demo
+dotnet run --project demo-exe -- -s ./data/sample-binary-001.txt -e 0x0c -l trace
+# or
+make
 
-2024-06-02 17:32:46.6467|INFO|rv32i-cs.Program|* Elapsed time: 17215 ms
+# .net 8 test
+make demo8
+# .net 6 test
+make demo6
 ```
 
 ## Quick Benchmark on M1 Mac mini
