@@ -180,7 +180,7 @@ namespace RV32I
             return Emu.ReadU32(PC);
         }
 
-        private bool Execute(Instruction i)
+        public bool Execute(Instruction i)
         {
             var op = i.GetOpName();
             bool incrementPC = true;
@@ -211,7 +211,7 @@ namespace RV32I
                     break;
                 case OpName.Jalr:
                     t = PC + 4;
-                    PC = (X[i.Rs1] + i.Imm) & 0xffffffe;
+                    PC = (uint)((X[i.Rs1] + i.Imm) & 0xffffffe);
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = t;

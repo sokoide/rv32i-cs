@@ -76,6 +76,31 @@ namespace RV32I
         public byte Rd { get; set; }
         public byte Opcode { get; set; }
 
+        public Instruction()
+        {
+            Opcode = 0;
+            Rd = 0;
+            Funct3 = 0;
+            Rs1 = 0;
+            Rs2 = 0;
+            Funct7 = 0;
+            Imm = 0;
+            Type = InstructionType.I;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            var t = (Instruction)obj;
+            return (Opcode == t.Opcode &&
+            Rd == t.Rd &&
+            Funct3 == t.Funct3 &&
+            Rs1 == t.Rs1 &&
+            Rs2 == t.Rs2 &&
+            Funct7 == t.Funct7 &&
+            Imm == t.Imm &&
+            Type == t.Type);
+        }
+
         public Instruction(uint instr)
         {
             Opcode = (byte)(instr & 0b1111111);
@@ -140,7 +165,7 @@ namespace RV32I
             return $"Type: {Type}, Opcode: 0x{Opcode:X2}, Rd: {Rd}, Funct3: 0x{Funct3:X2}, Rs1: {Rs1}, Rs2: {Rs2}, Funct7: 0x{Funct7:X2}, Imm: 0x{Imm:X8}";
         }
 
-        public uint GetCodeBase(string t, int op1, int op2, int op3)
+        public static uint GetCodeBase(string t, int op1, int op2, int op3)
         {
             uint code = 0;
             uint imm20, imm101, imm11, imm1912, imm12, imm105, imm41;
@@ -169,23 +194,23 @@ namespace RV32I
             return code;
         }
 
-        public uint GenCode(OpName opn, int op1, int op2, int op3)
+        public static uint GenCode(OpName opn, int op1, int op2, int op3)
         {
             uint code = 0;
             switch (opn)
             {
                 case OpName.Lui:
-                    code = (uint)op2 << 12 | (uint)op1 << 7 | 0b0110111;
+                    code = (uint)op2 << 12 | (uint)(op1 << 7) | 0b0110111;
                     return code;
                 case OpName.Auipc:
-                    code = (uint)op2 << 12 | (uint)op1 << 7 | 0b0010111;
+                    code = (uint)op2 << 12 | (uint)(op1 << 7) | 0b0010111;
                     return code;
                 case OpName.Jal:
                     code = GetCodeBase("J", op1, op2, op3);
                     return code;
                 case OpName.Jalr:
                     uint offset = (uint)op2 & 0b1111_11111111;
-                    code = offset << 20 | (uint)op3 << 15 | (uint)op1 << 7 | 0b1100111;
+                    code = offset << 20 | (uint)(op3 << 15) | (uint)(op1 << 7) | 0b1100111;
                     return code;
                 case OpName.Beq:
                     code = GetCodeBase("B", op1, op2, op3) | (0b000 << 12);
@@ -560,13 +585,15 @@ namespace RV32I
         }
 
 
-        private uint SignExtension(uint value, int bits)
+        private uint SignExtension(uint imm, int digit)
         {
-            if ((value & (1 << (bits - 1))) != 0)
+            uint sign = (imm >> digit) & 0b1;
+            if (sign == 1)
             {
-                value |= (uint.MaxValue << bits);
+                uint mask = (uint)0xFFFFFFFF - ((uint)(1 << digit) - 1);
+                imm = mask | imm;
             }
-            return value;
+            return imm;
         }
 
         private string RegName(byte reg)
