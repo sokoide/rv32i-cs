@@ -8,7 +8,10 @@ namespace RV32I
 
         public static void Trace(string message)
         {
+            // Trace is only enabled in DEBUG builds
+#if DEBUG
             logger.Trace(message);
+#endif
         }
 
         public static void Info(string message)

@@ -20,9 +20,9 @@ dotnet run --framework net6.0 --configuration Release --project rv32i-cs-net6.cs
 
 ## Quick Benchmark on M1 Mac mini
 
-* rv32i-go built by go1.22.3:  3.4s
-* rv32i-cs on .net 8.0.6:     17.2s
-* rv32i-cs on .net 6.0.31:    32.3s
+* rv32i-go built by go1.22.3: 3.4s
+* rv32i-cs on .net 8.0.6:     0.9s
+* rv32i-cs on .net 6.0.31:    1.3s
 
 ## Note
 

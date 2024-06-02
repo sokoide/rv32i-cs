@@ -150,10 +150,8 @@ namespace RV32I
         public void Step()
         {
             uint u32instr = Fetch();
-            Log.Trace($"PC: 0x{PC:X8}, u32instr: {u32instr:X8}");
             // fetch
             Instruction instr = new Instruction(u32instr);
-            Log.Trace($"instr: {instr}");
 
             bool incrementPC = Execute(instr);// decode
 
@@ -191,14 +189,12 @@ namespace RV32I
             switch (op)
             {
                 case OpName.Lui:
-                    Log.Trace($"lui: X[{i.Rd}] <- {i.Imm:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = i.Imm;
                     }
                     break;
                 case OpName.Auipc:
-                    Log.Trace($"auipc: X[{i.Rd}] <- PC:{PC:x} + imm:{i.Imm:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = PC + i.Imm;
@@ -211,7 +207,6 @@ namespace RV32I
                     {
                         X[i.Rd] = t;
                     }
-                    Log.Trace($"jal: PC={PC:x}, X[{i.Rd}]={t:x}");
                     incrementPC = false;
                     break;
                 case OpName.Jalr:
@@ -221,11 +216,9 @@ namespace RV32I
                     {
                         X[i.Rd] = t;
                     }
-                    Log.Trace($"jalr: PC={PC:x}, X[{i.Rd}]={t:x}");
                     incrementPC = false;
                     break;
                 case OpName.Beq:
-                    Log.Trace($"beq: Rs1:{i.Rs1:x}, Rs2:{i.Rs2:x}");
                     if (X[i.Rs1] == X[i.Rs2])
                     {
                         PC += i.Imm;
@@ -233,7 +226,6 @@ namespace RV32I
                     }
                     break;
                 case OpName.Bne:
-                    Log.Trace($"bne: Rs1:{i.Rs1:x}, Rs2:{i.Rs2:x}");
                     if (X[i.Rs1] != X[i.Rs2])
                     {
                         PC += i.Imm;
@@ -243,7 +235,6 @@ namespace RV32I
                 case OpName.Blt:
                     int a = (int)X[i.Rs1];
                     int b = (int)X[i.Rs2];
-                    Log.Trace($"blt: Rs1:{i.Rs1:x}, Rs2:{i.Rs2:x}");
                     if (a < b)
                     {
                         PC += i.Imm;
@@ -253,7 +244,6 @@ namespace RV32I
                 case OpName.Bge:
                     a = (int)X[i.Rs1];
                     b = (int)X[i.Rs2];
-                    Log.Trace($"bge: Rs1:{i.Rs1:x}, Rs2:{i.Rs2:x}");
                     if (a >= b)
                     {
                         PC += i.Imm;
@@ -261,7 +251,6 @@ namespace RV32I
                     }
                     break;
                 case OpName.Bltu:
-                    Log.Trace($"bltu: Rs1:{i.Rs1:x}, Rs2:{i.Rs2:x}");
                     if (X[i.Rs1] < X[i.Rs2])
                     {
                         PC += i.Imm;
@@ -269,7 +258,6 @@ namespace RV32I
                     }
                     break;
                 case OpName.Bgeu:
-                    Log.Trace($"bgeu: Rs1:{i.Rs1:x}, Rs2:{i.Rs2:x}");
                     if (X[i.Rs1] >= X[i.Rs2])
                     {
                         PC += i.Imm;
@@ -278,7 +266,6 @@ namespace RV32I
                     break;
                 case OpName.Lb:
                     uint addr = X[i.Rs1] + i.Imm;
-                    Log.Trace($"lb: read {addr:x} -> X[{i.Rd}]");
                     uint data = Emu.ReadU8(addr);
                     if (i.Rd > 0)
                     {
@@ -287,7 +274,6 @@ namespace RV32I
                     break;
                 case OpName.Lh:
                     addr = X[i.Rs1] + i.Imm;
-                    Log.Trace($"lh: read {addr:x} -> X[{i.Rd}]");
                     data = Emu.ReadU16(addr);
                     if (i.Rd > 0)
                     {
@@ -296,7 +282,6 @@ namespace RV32I
                     break;
                 case OpName.Lw:
                     addr = X[i.Rs1] + i.Imm;
-                    Log.Trace($"lw: read {addr:x} -> X[{i.Rd}]");
                     data = Emu.ReadU32(addr);
                     if (i.Rd > 0)
                     {
@@ -305,7 +290,6 @@ namespace RV32I
                     break;
                 case OpName.Lbu:
                     addr = X[i.Rs1] + i.Imm;
-                    Log.Trace($"lbu: read {addr:x} -> X[{i.Rd}]");
                     data = Emu.ReadU8(addr);
                     if (i.Rd > 0)
                     {
@@ -314,7 +298,6 @@ namespace RV32I
                     break;
                 case OpName.Lhu:
                     addr = X[i.Rs1] + i.Imm;
-                    Log.Trace($"lhu: read {addr:x} -> X[{i.Rd}]");
                     data = Emu.ReadU16(addr);
                     if (i.Rd > 0)
                     {
@@ -324,30 +307,25 @@ namespace RV32I
                 case OpName.Sb:
                     addr = X[i.Rs1] + i.Imm;
                     byte byteData = (byte)(X[i.Rs2] & 0xFF);
-                    Log.Trace($"sb: write {byteData:x} at {addr:x}");
                     Emu.WriteU8(addr, byteData);
                     break;
                 case OpName.Sh:
                     addr = X[i.Rs1] + i.Imm;
                     ushort shortData = (ushort)(X[i.Rs2] & 0xFFFF);
-                    Log.Trace($"sh: write {shortData:x} at {addr:x}");
                     Emu.WriteU16(addr, shortData);
                     break;
                 case OpName.Sw:
                     addr = X[i.Rs1] + i.Imm;
                     data = X[i.Rs2];
-                    Log.Trace($"sw: write {data:x} at {addr:x}");
                     Emu.WriteU32(addr, data);
                     break;
                 case OpName.Addi:
-                    Log.Trace($"addi: rs1:{i.Rs1:x} + imm:{i.Imm:x} -> rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] + i.Imm;
                     }
                     break;
                 case OpName.Slti:
-                    Log.Trace($"slti: rs1:{i.Rs1:x}, imm:{i.Imm:x}, rd:{i.Rd:x}");
                     if ((int)X[i.Rs1] < (int)i.Imm)
                     {
                         if (i.Rd > 0)
@@ -361,7 +339,6 @@ namespace RV32I
                     }
                     break;
                 case OpName.Sltiu:
-                    Log.Trace($"sltiu: rs1:{i.Rs1:x}, imm:{i.Imm:x}, rd:{i.Rd:x}");
                     if (X[i.Rs1] < i.Imm)
                     {
                         if (i.Rd > 0)
@@ -375,42 +352,36 @@ namespace RV32I
                     }
                     break;
                 case OpName.Xori:
-                    Log.Trace($"xori: rs1:{i.Rs1:x}, imm:{i.Imm:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] ^ i.Imm;
                     }
                     break;
                 case OpName.Ori:
-                    Log.Trace($"ori: rs1:{i.Rs1:x}, imm:{i.Imm:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] | i.Imm;
                     }
                     break;
                 case OpName.Andi:
-                    Log.Trace($"andi: rs1:{i.Rs1:x}, imm:{i.Imm:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] & i.Imm;
                     }
                     break;
                 case OpName.Slli:
-                    Log.Trace($"slli: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] << (int)i.Rs2;
                     }
                     break;
                 case OpName.Srli:
-                    Log.Trace($"srli: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] >> (int)i.Rs2;
                     }
                     break;
                 case OpName.Srai:
-                    Log.Trace($"srai: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     data = X[i.Rs1] >> (int)i.Rs2;
                     if (i.Rd > 0)
                     {
@@ -418,28 +389,24 @@ namespace RV32I
                     }
                     break;
                 case OpName.Add:
-                    Log.Trace($"add: rs1:{i.Rs1:x} + rs2:{i.Rs2:x} -> rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] + X[i.Rs2];
                     }
                     break;
                 case OpName.Sub:
-                    Log.Trace($"sub: rs1:{i.Rs1:x} + rs2:{i.Rs2:x} -> rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] - X[i.Rs2];
                     }
                     break;
                 case OpName.Sll:
-                    Log.Trace($"sll: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] << (int)X[i.Rs2];
                     }
                     break;
                 case OpName.Slt:
-                    Log.Trace($"slt: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if ((int)X[i.Rs1] < (int)X[i.Rs2])
                     {
                         if (i.Rd > 0)
@@ -453,7 +420,6 @@ namespace RV32I
                     }
                     break;
                 case OpName.Sltu:
-                    Log.Trace($"sltu: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (X[i.Rs1] < X[i.Rs2])
                     {
                         if (i.Rd > 0)
@@ -467,14 +433,12 @@ namespace RV32I
                     }
                     break;
                 case OpName.Xor:
-                    Log.Trace($"xor: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] ^ X[i.Rs2];
                     }
                     break;
                 case OpName.Srl:
-                    Log.Trace($"srl: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         shamt = 0b11111 & X[i.Rs2];
@@ -482,7 +446,6 @@ namespace RV32I
                     }
                     break;
                 case OpName.Sra:
-                    Log.Trace($"sra: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     shamt = 0b11111 & X[i.Rs2];
                     data = X[i.Rs1] >> (int)shamt;
                     if (i.Rd > 0)
@@ -491,14 +454,12 @@ namespace RV32I
                     }
                     break;
                 case OpName.Or:
-                    Log.Trace($"or: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] | X[i.Rs2];
                     }
                     break;
                 case OpName.And:
-                    Log.Trace($"and: rs1:{i.Rs1:x}, rs2:{i.Rs2:x}, rd:{i.Rd:x}");
                     if (i.Rd > 0)
                     {
                         X[i.Rd] = X[i.Rs1] & X[i.Rs2];
